@@ -14,43 +14,48 @@ jobs:
     - uses: actions/checkout@v3
    
     # Install .NET 6.0
-    - name: Setup .NET
+    - name: Install .NET 6.0
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
-    
-    # - name: Install .NET WebAssembly Tools
-    #   run: dotnet workload install wasm-tools
-   
    
     # Restore dependencies
     - name: Restore dependencies
       run: dotnet restore
+    
     # Build project
     - name: Build
       run: dotnet build --no-restore
+    
     # Run Tests
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
-    # Generate the website
-    - name: Publish
-      run: |
+    # Generate website
+    - name: Generate website
+      run: 
         dotnet publish ekapturio.csproj -c Release -o release -p:GHPages=true --nologo
+      
+    # Copy auto-generated css file 
+    - name: Generate Website
+      run:
         cp obj/Debug/net6.0/scopedcss/bundle/. bin/Release/net6.0/wwwroot -r
+        
+    # Copy all files from wwwroot folder
+    - name: Generate Website
+      run:
         cp wwwroot/. bin/Release/net6.0/wwwroot -r
     
-    # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+    # add .nojekyll file
     - name: Add .nojekyll file
       run: touch release/wwwroot/.nojekyll
 
-    # Publish the website
+    # Publish to Github Pages
     - name: GitHub Pages action
       if: ${{ github.ref == 'refs/heads/main' }} # Publish only when the push is on master
       uses: peaceiris/actions-gh-pages@v3.6.1
       with:
         external_repository: ekapturio/ekapturio.github.io
-        # github_token: ${{ secrets.PUBLISH_TOKEN }}
         personal_token: ${{ secrets.PUBLISH_TOKEN }}
         publish_branch: gh-pages
         publish_dir: bin/Release/net6.0/wwwroot
