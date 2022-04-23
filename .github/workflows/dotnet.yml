@@ -19,8 +19,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     
-    - name: Install .NET WebAssembly Tools
-      run: dotnet workload install wasm-tools
+    # - name: Install .NET WebAssembly Tools
+    #   run: dotnet workload install wasm-tools
    
    
     # Restore dependencies
