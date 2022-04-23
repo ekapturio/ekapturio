@@ -26,6 +26,23 @@ jobs:
     # Run Tests
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+    # Publish the website
+    - name: GitHub Pages action
+      if: ${{ github.ref == 'refs/heads/main' }} # Publish only when the push is on master
+      uses: peaceiris/actions-gh-pages@v3.6.1
+      with:
+        external_repository: ekapturio/ekapturio.github.io
+        # github_token: ${{ secrets.PUBLISH_TOKEN }}
+        personal_token: ${{ secrets.PUBLISH_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: wwwroot
+        allow_empty_commit: false
+        keep_files: false
+        force_orphan: true
+      #   # TODO uncomment the following line if you have a custom domain name
+      #   # cname: demo.meziantou.net
+
     # Generate the website
     - name: Publish
       run: |
