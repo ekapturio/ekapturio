@@ -11,7 +11,6 @@ git commit -m %CommitMessage%
 
 git push
 
-
 set PathCurrentDirectory=%~dp0
 
 for %%I in (.) do set CurrentDirectory=%%~nxI
@@ -22,7 +21,7 @@ set DeploymentFilesDirectory=%PathCurrentDirectory%build\wwwroot
 
 set GitHubIoDirectory=%PathParentCurrentDirectory%%CurrentDirectory%.github.io
 
-dotnet publish --configuration Release --output build
+dotnet publish --configuration Release --output build --nologo
 
 robocopy "%DeploymentFilesDirectory%" "%GitHubIoDirectory%" /e
 
