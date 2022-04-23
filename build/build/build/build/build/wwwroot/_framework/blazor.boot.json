@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "ekapturio.dll": "sha256-1\/Z0n1mwom7lQdKp6wdtSDMvm58\/8NtT00C9uK0zNVE=",
+      "ekapturio.dll": "sha256-Rr71atn23Df9E3s3z6SBvl1YBr56tD5u36Na7tWf+5o=",
       "Microsoft.AspNetCore.Components.dll": "sha256-yt3vX+tG6ZoHoF1Z2hbiiMMTaeR5u5pPqhO8sPxqRW8=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-J56CIqNtJKqXm6dWMAhvRI23W5p7RnErlWEDZVcwjV0=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-Izlw\/SnIKXEmOa2P51s8rKqkVBfJ+MDvJMUpyP5lHkk=",
