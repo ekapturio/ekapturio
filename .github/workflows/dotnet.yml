@@ -12,11 +12,17 @@ jobs:
     steps:
     # Checkout code
     - uses: actions/checkout@v3
+   
     # Install .NET 6.0
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
+    
+    - name: Install .NET WebAssembly Tools
+      run: dotnet workload install wasm-tools
+   
+   
     # Restore dependencies
     - name: Restore dependencies
       run: dotnet restore
@@ -33,7 +39,6 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3.6.1
       with:
         external_repository: ekapturio/ekapturio.github.io
-        # github_token: ${{ secrets.PUBLISH_TOKEN }}
         personal_token: ${{ secrets.PUBLISH_TOKEN }}
         publish_branch: gh-pages
         publish_dir: wwwroot
