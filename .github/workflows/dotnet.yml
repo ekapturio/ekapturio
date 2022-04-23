@@ -33,25 +33,10 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
-    # Publish the website
-    - name: GitHub Pages action
-      if: ${{ github.ref == 'refs/heads/main' }} # Publish only when the push is on master
-      uses: peaceiris/actions-gh-pages@v3.6.1
-      with:
-        external_repository: ekapturio/ekapturio.github.io
-        personal_token: ${{ secrets.PUBLISH_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: wwwroot
-        allow_empty_commit: false
-        keep_files: false
-        force_orphan: true
-      #   # TODO uncomment the following line if you have a custom domain name
-      #   # cname: demo.meziantou.net
-
     # Generate the website
     - name: Publish
       run: |
-        cp wwwroot/index.html wwwroot/404.html
+        cp wwwroot bin/Release/net6.0/wwwroot
         dotnet publish ekapturio.csproj -c Release -o release -p:GHPages=true --nologo
     
     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
