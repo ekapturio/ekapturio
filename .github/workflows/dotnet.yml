@@ -37,12 +37,12 @@ jobs:
         dotnet publish ekapturio.csproj -c Release -o release -p:GHPages=true --nologo
       
     # Copy auto-generated css file 
-    - name: Generate Website
+    - name: Copy auto-generated ekapturio.styles.css file
       run:
         cp obj/Debug/net6.0/scopedcss/bundle/. bin/Release/net6.0/wwwroot -r
         
     # Copy all files from wwwroot folder
-    - name: Generate Website
+    - name: Copy files wwwroot folder
       run:
         cp wwwroot/. bin/Release/net6.0/wwwroot -r
     
