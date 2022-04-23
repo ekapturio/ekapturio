@@ -36,9 +36,9 @@ jobs:
       if: ${{ github.ref == 'refs/heads/main' }} # Publish only when the push is on master
       uses: peaceiris/actions-gh-pages@v3.6.1
       with:
-        repositoryname: ekapturio/ekapturio.github.io
+        repository_name: ekapturio/ekapturio.github.io
         github_token: ${{ secrets.PUBLISH_TOKEN }}
-        publish_branch: gh-pages
+        publish_branch: main
         publish_dir: bin/Release/net6.0/wwwroot
         allow_empty_commit: false
         keep_files: false
