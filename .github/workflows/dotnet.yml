@@ -31,13 +31,17 @@ jobs:
     - name: Publish
       run: dotnet publish ekapturio.csproj -c Release -o release --nologo
 
+    # copy index.html to 404.html to serve the same file when a file is not found
+    - name: copy index.html to 404.html
+      run: cp release/wwwroot/index.html release/wwwroot/404.html
+
+    # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+    - name: Add .nojekyll file
+      run: touch release/wwwroot/.nojekyll
+
     # Publish the website
     - name: GitHub Pages action
       if: ${{ github.ref == 'refs/heads/main' }} # Publish only when the push is on master
-
-
-
-
       uses: peaceiris/actions-gh-pages@v3.6.1
       with:
         external_repository: ekapturio/ekapturio.github.io
