@@ -37,6 +37,7 @@ jobs:
     - name: Publish
       run: |
         dotnet publish ekapturio.csproj -c Release -o release -p:GHPages=true --nologo
+        cp obj/Debug/net6.0/scopedcss/bundle/. bin/Release/net6.0/wwwroot -r
         cp wwwroot/. bin/Release/net6.0/wwwroot -r
     
     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
