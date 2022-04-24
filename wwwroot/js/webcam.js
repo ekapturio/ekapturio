@@ -1,7 +1,9 @@
 function startVideo(src) {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({
-            video: true
+            video: {
+                facingMode: 'environment'
+            }
         }).then(function(stream) {
             let video = document.getElementById(src);
             if ("srcObject" in video) {

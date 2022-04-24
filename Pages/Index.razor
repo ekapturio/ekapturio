@@ -9,7 +9,9 @@
 @using SixLabors.Fonts
 @using System.IO
 
+
 <h1>Blazor Webcam</h1>
+
 <video id="videoFeed" width="320" height="240"></video>
 <canvas class="d-none" id="currentFrame" width="320" height="240"></canvas><br />
 <input class="form-control mb-3" style="width:320px;" type="text" @bind="_captionText" placeholder="Enter caption" />
@@ -72,4 +74,7 @@
         
         _frameUri = image.ToBase64String(JpegFormat.Instance);
     }
+
+ 
+
 }
