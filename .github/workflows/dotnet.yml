@@ -45,7 +45,13 @@ jobs:
     - name: Copy files wwwroot folder
       run:
         cp wwwroot/. bin/Release/net6.0/wwwroot -r
-    
+        
+    # Copy all files from wwwroot folder
+    - name: Copy files wwwroot folder
+      run: |
+        cp MudBlazor/MudBlazor.min.css bin/Release/net6.0/wwwroot/css/mud-blazor/MudBlazor.min.css
+        cp MudBlazor/MudBlazor.min.js bin/Release/net6.0/wwwroot/js/mud-blazor/MudBlazor.min.js
+  
     # add .nojekyll file
     - name: Add .nojekyll file
       run: touch release/wwwroot/.nojekyll
