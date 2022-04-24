@@ -31,6 +31,22 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
+    # Find and replace MudBlazor.min.css reference
+    - name: Find and replace MudBlazor.min.css reference
+      uses: jacobtomlinson/gha-find-replace@v2
+      with:
+        find: "_content/MudBlazor/MudBlazor.min.css"
+        replace: "css/mud-blazor/MudBlazor.min.css"
+        regex: false
+      
+    # Find and replace MudBlazor.min.js reference
+    - name: Find and replace MudBlazor.min.js reference
+      uses: jacobtomlinson/gha-find-replace@v2
+      with:
+        find: "_content/MudBlazor/MudBlazor.min.js"
+        replace: "js/mud-blazor/MudBlazor.min.js"
+        regex: false
+
     # Generate website
     - name: Generate website
       run: 
