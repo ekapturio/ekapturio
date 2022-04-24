@@ -20,17 +20,4 @@
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\css\mud-blazor" />
-    <Folder Include="wwwroot\js\mud-blazor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="MudBlazor\MudBlazor.min.css" />
-    <Content Include="MudBlazor\MudBlazor.min.js">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>
