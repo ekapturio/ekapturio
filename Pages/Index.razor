@@ -1,5 +1,5 @@
 ﻿@page "/"
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 @inject HttpClient Http
 @using SixLabors.ImageSharp
 @using SixLabors.ImageSharp.Drawing
@@ -7,54 +7,54 @@
 @using SixLabors.ImageSharp.Processing;
 @using SixLabors.ImageSharp.Formats.Jpeg
 @using SixLabors.Fonts
-@using System.Net.Http
 @using System.IO
 
 <h1>Blazor Webcam</h1>
-<video id="videoFeed" width="320" height="240" /><canvas class="d-none" id="currentFrame" width="320" height="240" /><br />
-<input class="form-control mb-3" style="width:320px;" type="text" @bind="captionText" placeholder="Enter caption" />
+<video id="videoFeed" width="320" height="240"></video>
+<canvas class="d-none" id="currentFrame" width="320" height="240"></canvas><br />
+<input class="form-control mb-3" style="width:320px;" type="text" @bind="_captionText" placeholder="Enter caption" />
 <button class="btn btn-primary mb-3" @onclick="CaptureFrame">Capture Frame</button> <br />
-@if (!string.IsNullOrEmpty(frameUri))
+@if (!string.IsNullOrEmpty(_frameUri))
 {
-    <img src="@frameUri" />
+    <img src="@_frameUri"  alt="image"/>
 }
 
 
 @code {
-    private string captionText;
-    private string frameUri;
+    private string? _captionText;
+    private string? _frameUri;
 
-    FontCollection collection = new FontCollection();
-    FontFamily sansFamily;
-    Font captionFont;
+    readonly FontCollection _collection = new FontCollection();
+    FontFamily? _sansFamily;
+    Font? _captionFont;
 
     protected override async Task OnInitializedAsync()
     {
-        await JSRuntime.InvokeVoidAsync("startVideo", "videoFeed");
+        await JsRuntime.InvokeVoidAsync("startVideo", "videoFeed");
 
         //Font stored in wwwroot. Fetch it as byte array, and use it
         var fontBytes = await Http.GetByteArrayAsync("OpenSans-Regular.ttf");
-        collection.Install(new MemoryStream(fontBytes));
-        collection.TryFind("Open Sans", out sansFamily);
-        captionFont = sansFamily.CreateFont(16, FontStyle.Regular);
+        _collection.Install(new MemoryStream(fontBytes));
+        _collection.TryFind("Open Sans", out _sansFamily);
+        if (_sansFamily != null) _captionFont = _sansFamily.CreateFont(16, FontStyle.Regular);
     }
 
     private async Task CaptureFrame()
     {
-        await JSRuntime.InvokeAsync<String>("getFrame", "videoFeed", "currentFrame", DotNetObjectReference.Create(this));
+        await JsRuntime.InvokeAsync<string>("getFrame", "videoFeed", "currentFrame", DotNetObjectReference.Create(this));
     }
 
 
     [JSInvokable]
     public void ProcessImage(string imageString)
     {
-        byte[] imageData = Convert.FromBase64String(imageString.Split(',')[1]);
+        var imageData = Convert.FromBase64String(imageString.Split(',')[1]);
 
         //Do image processing here
 
-        DrawingOptions alignCenter = new DrawingOptions()
+        var alignCenter = new DrawingOptions
         {
-            TextOptions = new TextOptions()
+            TextOptions = new TextOptions
             {
                 VerticalAlignment = VerticalAlignment.Center,
                 WrapTextWidth = 304, //Image is 320px wide. This will center with 8px margin on left and right
@@ -62,14 +62,14 @@
             }
         };
 
-        using (var image = Image.Load(imageData))
-        {
-            image.Mutate(x => x
-                .Flip(FlipMode.Horizontal) //To match mirrored webcam image
-                .Fill(Color.ParseHex("0008"), new RectangularPolygon(0,220, 320, 20)) //Set footer bar for caption
-                .DrawText(alignCenter, captionText, captionFont, Color.White, new PointF(8, 230)) //center in footer bar)
+        using var image = Image.Load(imageData);
+        
+        image.Mutate(x => x
+            .Flip(FlipMode.Horizontal) //To match mirrored webcam image
+            .Fill(Color.ParseHex("0008"), new RectangularPolygon(0,220, 320, 20)) //Set footer bar for caption
+            .DrawText(alignCenter, _captionText, _captionFont, Color.White, new PointF(8, 230)) //center in footer bar)
             );
-            frameUri = image.ToBase64String(JpegFormat.Instance);
-        }
+        
+        _frameUri = image.ToBase64String(JpegFormat.Instance);
     }
 }
